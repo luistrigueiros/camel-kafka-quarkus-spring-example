@@ -3,6 +3,6 @@ package org.acme;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
 @QuarkusIntegrationTest
-class GreetingControllerIT extends GreetingControllerTest {
+class KafkaControllerIT extends KafkaControllerTest {
     // Execute the same tests but in packaged mode.
 }
