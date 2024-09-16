@@ -10,9 +10,9 @@ timer:
 
 quarkus:
   log:
-    category:
-     "org.apache.camel.component.kafka":
-        level: DEBUG
+#    category:
+#     "org.apache.camel.component.kafka":
+#        level: DEBUG
 
 # Kafka brokers in native test
 "%prod":

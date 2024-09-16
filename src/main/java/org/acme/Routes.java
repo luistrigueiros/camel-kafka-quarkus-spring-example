@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 
 import java.time.LocalTime;
@@ -18,6 +19,7 @@ public class Routes extends RouteBuilder {
         // produces messages to kafka
         from("timer:foo?period={{timer.period}}&delay={{timer.delay}}")
                 .routeId("FromTimer2Kafka")
+                .transform( constant("Hello World "))
                 .process(this::processTimerEvent)
                 .to("kafka:{{kafka.topic.name}}")
                 .log("Message correctly sent to the topic! : \"${body}\" ");
@@ -32,8 +34,9 @@ public class Routes extends RouteBuilder {
     private void processTimerEvent(Exchange exchange) {
         log.debug("Processing timer event");
         String camelTimerFiredTime = LocalTime.now().toString();
-        String body = "Current time is " + camelTimerFiredTime;
-        exchange.getIn().setBody(body);
+        Message in = exchange.getIn();
+        String body = in.getBody(String.class) +  " at " + camelTimerFiredTime;
+        in.setBody(body);
     }
 
     @PostConstruct
