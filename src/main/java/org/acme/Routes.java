@@ -1,19 +1,16 @@
 package org.acme;
 
+import io.quarkus.logging.Log;
 import jakarta.annotation.PostConstruct;
-//import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Singleton;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalTime;
 
 @Singleton
 public class Routes extends RouteBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(Routes.class);
 
     @Override
     public void configure() throws Exception {
@@ -32,12 +29,14 @@ public class Routes extends RouteBuilder {
     }
 
     private void processTimerEvent(Exchange exchange) {
+        Log.debug("Processing timer event");
         String camelTimerFiredTime = LocalTime.now().toString();
-        exchange.getIn().setBody(("Current time is " + camelTimerFiredTime));
+        String body = "Current time is " + camelTimerFiredTime;
+        exchange.getIn().setBody(body);
     }
 
     @PostConstruct
     private void postInit() {
-        logger.info("Started routes!");
+        Log.info("Started routes!");
     }
 }
