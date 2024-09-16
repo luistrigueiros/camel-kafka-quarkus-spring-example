@@ -1,13 +1,14 @@
 package org.acme;
 
-import io.quarkus.logging.Log;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 
 import java.time.LocalTime;
 
+@Slf4j
 @Singleton
 public class Routes extends RouteBuilder {
 
@@ -29,7 +30,7 @@ public class Routes extends RouteBuilder {
     }
 
     private void processTimerEvent(Exchange exchange) {
-        Log.debug("Processing timer event");
+        log.debug("Processing timer event");
         String camelTimerFiredTime = LocalTime.now().toString();
         String body = "Current time is " + camelTimerFiredTime;
         exchange.getIn().setBody(body);
@@ -37,6 +38,6 @@ public class Routes extends RouteBuilder {
 
     @PostConstruct
     private void postInit() {
-        Log.info("Started routes!");
+        log.info("Started routes!");
     }
 }
